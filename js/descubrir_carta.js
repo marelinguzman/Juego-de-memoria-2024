@@ -1,89 +1,67 @@
-//descubrir carta
+import { Cargar_acierto } from "./Cargar_acierto.js";
+import { Actualizar_vidas } from "./Actualizar_vidas.js";
+import { Cargar_puntos } from "./Puntos.js";
+import { vidas } from "./Actualizar_vidas.js";
 
-// Seleccionar todas las cartas traseras en el documento
+import { iniciar_cronometro } from "./Cargar_cronometro.js";
 
 let todas_las_cartad = document.querySelectorAll(".carta_trasera");
 
-// Iterar sobre cada carta trasera
+let contador_de_cartas = 0;
+let estado_del_cronometro = 0;
 
-    todas_las_cartad.forEach((cada_div)=>{
-            // Agregar un evento de clic a cada carta trasera
+todas_las_cartad.forEach((cada_div) => {
+    cada_div.addEventListener("click", () => {
 
-        cada_div.addEventListener("click",()=>{
-           
+        estado_del_cronometro++;
+        if(estado_del_cronometro==1){
+            iniciar_cronometro(0,60);
+        }
 
+        /* CANTIDAD DE CARTAS DESCUBIRTAS */
+        let cartas_descubiertas = document.querySelectorAll(".activar");
+        if (cartas_descubiertas.length < 2){
+            cada_div.classList.add("activar");
+            cartas_descubiertas = document.querySelectorAll(".activar");
 
-            
-    // cantidad de cartas descubiertas
+            if (cartas_descubiertas.length == 2){
 
-            let cantidad_descubiertas = document.querySelectorAll(".activar")
-            let total_descubiertas = cantidad_descubiertas.length;
-            
-        // Verificar si ya hay menos de 2 cartas descubiertas
+                let carta_1 = cartas_descubiertas[0].textContent;
+                let carta_2 = cartas_descubiertas[1].textContent;
 
-            if(total_descubiertas <2){
+                if (carta_1 == carta_2) {
 
-                // Marcar la carta actual como activa
+                    contador_de_cartas++;
 
-                cada_div.classList.add("activar")
-                cantidad_descubiertas = document.querySelectorAll(".activar")
-
-                    // Si hay exactamente 1 carta descubierta, programar un temporizador para ocultar las cartas después de 1 segundo
-
-
-                if(total_descubiertas==1){
-                    
-                    
-
-
-                    function comparar(){
-
-                        let carta_1 = cantidad_descubiertas[0].innerHTML;
-                        let carta_2 = cantidad_descubiertas[1].innerHTML;
-
-                        if(carta_1 == carta_2){
-                            console.log("verdadero")
-                            cantidad_descubiertas.forEach((carta)=>{
-                                
-                                setTimeout(()=>{
-                                    // Iterar sobre cada carta descubierta y quitar la clase "activar"
-    
-                                        cantidad_descubiertas.forEach((cada_carta_descubierta)=>{
-                                            cada_carta_descubierta.classList.remove("activar")
-                                            carta.innerHTML = "";
-                                carta.classList.remove("activar")
-                                
-                                            carta.classList.add("ocultar")
-                                        });
-                                    },(1000))
-                                    
-                            })
-                        
-                            
-                        }else{
-                            console.log("falso")
-                            setTimeout(()=>{
-                                // Iterar sobre cada carta descubierta y quitar la clase "activar"
-
-                                    cantidad_descubiertas.forEach((cada_carta_descubierta)=>{
-                                        cada_carta_descubierta.classList.remove("activar")
-                    
-                                    });
-                                },(1000))
-                        }
-
+                    if(contador_de_cartas==todas_las_cartad.length/2){
+                        Cargar_puntos(vidas.length);
                     }
-                    comparar();
 
+                    setTimeout(()=>{
+                        cartas_descubiertas.forEach((carta) => {
+                            carta.innerHTML = " "
+                            carta.classList.remove("activar");
+                            carta.classList.add("ocultar");
+                        })
+                        Cargar_acierto(carta_1); //🥱 Muy fácil
+                    },1000);
 
+                } else {
 
+                    Actualizar_vidas(false);
 
-
-
-                   
+                    console.log("Falso");                    setTimeout(() => {
+                        cartas_descubiertas.forEach((cada_carta_descubierta) => {
+                            cada_carta_descubierta.classList.remove("activar");
+                        })
+                    }, 1000);
                 }
 
             }
-
-        });
+        }
     });
+});
+
+if (estado_del_cronometro){
+    console.log("Activa");
+}

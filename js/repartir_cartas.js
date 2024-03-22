@@ -1,19 +1,35 @@
-import { cards1,cards2 } from "./Data_cartas.js"
+// TODAS LAS CARTAS
+import { lista_cartas_nivel } from "./Data_cartas.js";
 
-let todas_las_cartas= cards1.concat(cards2)
+// CONSTRUCCIÓN DEL NUVEL
+function construir_nivel(nivel){
 
-function repartir_Cartas(){
-    let tablero = document.querySelector(".tablero")
-    todas_las_cartas.forEach((cada_Carta)=>{
-        let carta = document.createElement("div")
-        carta.classList.add("carta_trasera")
-        carta.innerHTML = `<div class="carta_frontal">${cada_Carta}</div>`;
-        //agrega un elemento hijo a este div, tiene que ser un createElement
-        tablero.appendChild(carta)
-    })
+    function ordenarAleatorio(a, b) {
+        return Math.random() - 0.5;
+    }
+
+    let todas_las_tarjetas = lista_cartas_nivel[nivel].concat(lista_cartas_nivel[nivel]);
+
+    // Organiza de forma aleatoria la lista todas_las_cartas
+    todas_las_tarjetas.sort(ordenarAleatorio);
+
+    let lista_random = todas_las_tarjetas;
+    return lista_random;
 }
 
-repartir_Cartas();
+// ASIGNACIÓN DE NIVEL
+let nivel = construir_nivel(0);
 
+// REPARTIR CARTASCON EL NIVEL INDICADO
+function repartir_cartas(nivel){
 
+    let tablero = document.querySelector(".tablero");
+    nivel.forEach((cada_carta)=> {
+        let carta = document.createElement("div");
+        carta.classList.add("carta_trasera")
+        carta.innerHTML = `<div class="carta_frontal">${cada_carta}</div>`;
+        tablero.appendChild(carta);
+    })
 
+}
+repartir_cartas(nivel);
