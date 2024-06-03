@@ -3,7 +3,7 @@ let header = document.querySelector("#header");
 header.innerHTML = `
     <div class="nivel">
         Nivel
-        <div class="num-nivel"> 1 </div>
+        <div class="num-nivel">1</div>
     </div>
     <div class="puntos">🪙 0</div>
 
